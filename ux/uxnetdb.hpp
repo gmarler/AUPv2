@@ -18,14 +18,8 @@
 #ifndef _UXNETDB_HPP_
 #define _UXNETDB_HPP_
 
-#ifdef SOLARIS
-#define __EXTENSIONS__
-#endif
 #include <netdb.h>
 #include <net/if.h>
-#ifdef SOLARIS
-#undef _EXTENSIONS_
-#endif
 
 namespace Ux {
 
