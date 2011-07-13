@@ -18,7 +18,18 @@
 #ifndef _UX_HPP_
 #define _UX_HPP_
 
-#include "defs.h"
+/*   #include "../include/defs.h"  */
+#include <unistd.h>
+#include <sys/stat.h>
+#include <errno.h>
+typedef enum {EC_ERRNO = 0, EC_EAI = 1, EC_GETDATE = 2, EC_NONE = 3} EC_ERRTYPE;
+/*
+	File-permission-bit symbols
+*/
+/*[defs-perm]*/
+#define PERM_DIRECTORY	S_IRWXU
+#define PERM_FILE		(S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)
+/*[]*/
 #include <iostream.h>
 
 /**
@@ -36,19 +47,7 @@ class Base {
 } // namespace
 
 /* Following for statvfs functions */
-#if _XOPEN_SOURCE >= 4
 #include <sys/statvfs.h>
-#define STATVFS_NAME statvfs
-#define FSTATVFS_NAME fstatvfs
-#define STATVFS 1
-#elif defined(FREEBSD)
-#include <sys/param.h>
-#include <sys/mount.h>
-#define STATVFS_NAME statfs
-#define FSTATVFS_NAME fstatfs
-#else
-#error "Need statvfs or nonstandard substitute"
-#endif
 
 #include "uxaio.hpp"
 #include "uxdir.hpp"

@@ -46,7 +46,7 @@ namespace Ux {
 /**
 	\ingroup Ux
 */
-class Error : public exception {
+class Error : public std::exception {
 protected:
 	EC_ERRTYPE e_type;
 	int e_code;
