@@ -22,29 +22,29 @@ using namespace Ux;
 /**
 	Stream operator to output status code.
 */
-std::ostream& Ux::operator<<(std::ostream& s, const ExitStatus& status)
+std::ostream& Ux::operator<<(std::ostream& stream, const ExitStatus& status)
 {
 	int n = (ExitStatus&)status; // use variable in macros because of weird FreeBSD definitions
 
 	if (WIFEXITED(n))
-		s << "Exit value " << WEXITSTATUS(n);
+		stream << "Exit value " << WEXITSTATUS(n);
 	else {
 		char *desc;
 		char *signame = get_macrostr("signal", WTERMSIG(n), &desc);
 		if (desc[0] == '?')
 			desc = signame;
 		if (signame[0] == '?')
-			s << "Signal #" << WTERMSIG(n);
+			stream << "Signal #" << WTERMSIG(n);
 		else
-			s << desc;
+			stream << desc;
 		if (WCOREDUMP(n))
-			s << " - core dumped";
+			stream << " - core dumped";
 		if (WIFSTOPPED(n))
-			s << " (stopped)";
+			stream << " (stopped)";
 #if defined(_XOPEN_UNIX) && !defined(LINUX)
 		else if (WIFCONTINUED(n))
-			s << " (continued)";
+			stream << " (continued)";
 #endif
 	}
-	return s;
+	return stream;
 }

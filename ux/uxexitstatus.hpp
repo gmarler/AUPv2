@@ -28,11 +28,11 @@ protected:
 	int status;
 
 public:
-	ExitStatus(int s = 0)
-		: status(s)
+	ExitStatus(int stat = 0)
+		: status(stat)
 		{ }
-	void set(int s = 0)
-		{ status = s; }
+	void set(int stat = 0)
+		{ status = stat; }
 	operator int()
 		{ return status; }
 };
@@ -41,7 +41,7 @@ public:
 /** \name ostream Operators
 Operator to display ExitStatus.
 */
-std::ostream& operator<<(std::ostream& s, const ExitStatus& s);
+std::ostream& operator<<(std::ostream& stream, const ExitStatus& stat);
 //@}
 
 } // namespace
