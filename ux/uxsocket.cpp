@@ -47,7 +47,7 @@ const char *SockIPv4::get_string(char *buf, socklen_t bufsize) const
 /**
 	Sets object to zeros.
 */
-void SockIPv6::set(uint8_t *ip = NULL)
+void SockIPv6::set(uint8_t *ip)
 {
 	if (ip == NULL)
 		memset(ipv6, 0, sizeof(ipv6));

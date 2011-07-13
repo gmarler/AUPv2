@@ -18,16 +18,10 @@
 #ifndef _UXSOCKET_HPP_
 #define _UXSOCKET_HPP_
 
-#ifdef SOLARIS
-#define __EXTENSIONS__
-#endif
 #include <sys/socket.h>
 #include <sys/un.h>
 #include <netinet/in.h>
 #include <netdb.h>
-#ifdef SOLARIS
-#undef _EXTENSIONS_
-#endif
 
 namespace Ux {
 
