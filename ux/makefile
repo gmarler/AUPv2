@@ -53,8 +53,8 @@ CFLAGS =   -I. -I../include -I../common -I../c6 -D$(OS) -D_REENTRANT -D_THREAD_S
 					 -D_XOPEN_SOURCE=600 -D__EXTENSIONS__ -KPIC
 CXXFLAGS = -I. -I../include -I../common -I../c6 -D$(OS) -D_REENTRANT -D_THREAD_SAFE \
 					 -D__EXTENSIONS__ -KPIC
-CC = cc
-CXX = CC
+CC = /opt/solstudio12.2/bin/cc
+CXX = /opt/solstudio12.2/bin/CC
 
 UXHDRS = \
 	ux.hpp \
@@ -95,8 +95,11 @@ OBJS = \
 	uxtimetm.o \
 	$(AUPOBJS) $(PTHREADSTUB)
 
+libUX.so: $(OBJS)
+	$(CXX) -G -i -o libUX.so $(OBJS)
+
 tf: $(OBJS)
-	CXX -o tf $(OBJS) $(LIBS)
+	$(CXX) -o tf $(OBJS) $(LIBS)
 
 uxtestfile.o: uxtestfile.cpp $(UXHDRS)
 	$(CXX) $(CXXFLAGS)  -c -o uxtestfile.o uxtestfile.cpp
@@ -152,4 +155,4 @@ uxnetdb.o: uxnetdb.cpp $(UXHDRS)
 all:  tf
 
 clean:
-	rm  tf *.o
+	rm  tf *.o *.so
