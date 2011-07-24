@@ -93,7 +93,7 @@ OBJS = \
 	uxexitstatus.o\
 	uxfile.o\
 	uxtimetm.o \
-	$(AUPOBJS) $(PTHREADSTUB)
+	$(AUPOBJS) $(PTHREADSTUB) getdate_strerror.o
 
 lib_OBJS := $(filter-out uxtestfile.o, $(OBJS))
 libUX.so: $(lib_OBJS)
@@ -152,6 +152,9 @@ uxterminal.o: uxterminal.cpp $(UXHDRS)
 
 uxnetdb.o: uxnetdb.cpp $(UXHDRS)
 	$(CXX) $(CXXFLAGS)  -c -o uxnetdb.o uxnetdb.cpp
+
+getdate_strerror.o: getdate_strerror.c
+	$(CXX) $(CXXFLAGS)  -c -o getdate_strerror.o getdate_strerror.c
 
 all:  tf
 
