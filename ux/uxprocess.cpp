@@ -31,7 +31,7 @@
 */
 
 #define AUP2_SKIP_WAIT
-#include "defs.h"
+/*   #include "defs.h" */
 
 #ifdef _GNU_SOURCE
 #define _GNU_SOURCE_WAS_DEFINED
@@ -503,7 +503,7 @@ void Process::sigqueue(int signum, const union sigval value)
 	Calls ::waitpid. Use the inline version if you want to operate on the
 	Process object's process ID.
 */
-/* static */ pid_t Process::waitpid(pid_t pid, ExitStatus *statusp, int options = 0)
+/* static */ pid_t Process::waitpid(pid_t pid, ExitStatus *statusp, int options)
 {
 	pid_t rtn_pid;
 	int status;

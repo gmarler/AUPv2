@@ -50,9 +50,9 @@ defaulttarget: all
 #	NOTE: -KPIC is for 32-bit, -Kpic is for 64-bit?
 OS = SOLARIS
 CFLAGS =   -I. -I../include -I../common -I../c6 -D$(OS) -D_REENTRANT -D_THREAD_SAFE \
-					 -D_XOPEN_SOURCE=600 -D__EXTENSIONS__ -KPIC
+					 -D_POSIX_PTHREAD_SEMANTICS -D_XOPEN_SOURCE=500 -KPIC
 CXXFLAGS = -I. -I../include -I../common -I../c6 -D$(OS) -D_REENTRANT -D_THREAD_SAFE \
-					 -D__EXTENSIONS__ -KPIC
+					 -D_XOPEN_SOURCE=500 -D_POSIX_PTHREAD_SEMANTICS -KPIC
 CC = /opt/solstudio12.2/bin/cc
 CXX = /opt/solstudio12.2/bin/CC
 
@@ -95,8 +95,9 @@ OBJS = \
 	uxtimetm.o \
 	$(AUPOBJS) $(PTHREADSTUB)
 
-libUX.so: $(OBJS)
-	$(CXX) -G -i -o libUX.so $(OBJS)
+lib_OBJS := $(filter-out uxtestfile.o, $(OBJS))
+libUX.so: $(lib_OBJS)
+	$(CXX) -G -i -o libUX.so $(lib_OBJS)
 
 tf: $(OBJS)
 	$(CXX) -o tf $(OBJS) $(LIBS)
@@ -141,7 +142,7 @@ uxsocket.o: uxsocket.cpp $(UXHDRS)
 	$(CXX) $(CXXFLAGS)  -c -o uxsocket.o uxsocket.cpp
 
 uxsysvipc.o: uxsysvipc.cpp $(UXHDRS)
-	$(CXX) $(CXXFLAGS)  -c -o uxsysvipc.o uxsysvipc.cpp
+	$(CXX) $(CXXFLAGS) -c -o uxsysvipc.o uxsysvipc.cpp
 
 uxposixipc.o: uxposixipc.cpp $(UXHDRS)
 	$(CXX) $(CXXFLAGS)  -c -o uxposixipc.o uxposixipc.cpp

@@ -256,7 +256,7 @@ const char *TimeNsec::get_string(char *buf, size_t bufsize)
 */
 std::ostream& Ux::operator<<(std::ostream& s, const timeval& t)
 {
-	s << t.tv_sec << "." << setw(6) << setfill('0') << t.tv_usec;
+	s << t.tv_sec << "." << std::setw(6) << std::setfill('0') << t.tv_usec;
 	return s;
 }
 
@@ -265,7 +265,7 @@ std::ostream& Ux::operator<<(std::ostream& s, const timeval& t)
 */
 std::ostream& Ux::operator<<(std::ostream& s, const timespec& t)
 {
-	s << t.tv_sec << "." << setw(9) << setfill('0') << t.tv_nsec;
+	s << t.tv_sec << "." << std::setw(9) << std::setfill('0') << t.tv_nsec;
 	return s;
 }
 
@@ -299,7 +299,7 @@ void Clock::settime(const TimeNsec& t)
 /**
 	Calls clock_nanosleep; returns remaining time.
 */
-void Clock::nanosleep(int flags, const TimeNsec& nsecs, const TimeNsec& remain)
+void Clock::nanosleep(int flags, const TimeNsec& nsecs, TimeNsec& remain)
 {
 #if _POSIX_CLOCK_SELECTION > 0
 	int r;

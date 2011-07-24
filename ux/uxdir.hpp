@@ -37,7 +37,7 @@ public:
 		: File(-1, p, s)
 		{ }
 
-	void		mkdir(mode_t perms = PERM_DIRECTORY);
+	void		mkdir(mode_t perms);
 	void		rmdir(void);
 };
 

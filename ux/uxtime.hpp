@@ -159,7 +159,7 @@ public:
 	operator clock_t() const
 		{ return clock_id; }
 	void 			nanosleep(int flags, const TimeNsec& nsecs);
-	void 			nanosleep(int flags, const TimeNsec& nsecs, const TimeNsec& remain);
+	void 			nanosleep(int flags, const TimeNsec& nsecs, TimeNsec& remain);
 	static void		nanosleep(const TimeNsec& nsecs, TimeNsec& remain);
 	static void		nanosleep(const TimeNsec& nsecs);
 	static void		getcpuclockid(pid_t pid, Clock& clock);

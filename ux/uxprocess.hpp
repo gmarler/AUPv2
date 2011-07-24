@@ -64,7 +64,7 @@ public:
 	static clock_t	clock(void);
 	static void		execlp(const char *file, const char *arg0, ...);
 // execvpe member functions not thread safe because of setting of environ
-	static void		execvpe(const char *file, char *const argv[], char *const *envv = NULL);
+	static void		execvpe(const char *file, char *const argv[], char *const *envv);
 	/**
 		Calls ::_exit.
 	*/
@@ -151,7 +151,7 @@ public:
 		Calls ::wait.
 	*/
 	static pid_t 	wait(ExitStatus *statusp = NULL)
-						{ return Process::waitpid(-1, statusp); }
+						{ return Process::waitpid(-1, statusp, 0); }
 	static void		waitid(idtype_t idtype, id_t id, siginfo_t *infop, int options = 0);
 	static pid_t 	waitpid(pid_t pid, ExitStatus *statusp = NULL, int options = 0);
 	/**

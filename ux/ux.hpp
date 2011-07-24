@@ -19,9 +19,78 @@
 #define _UX_HPP_
 
 /*   #include "../include/defs.h"  */
-#include <unistd.h>
+/*  BEGINNING of definition for defs.h replacement */
+
+#if defined(SOLARIS) || defined(HPUX)
+#ifndef __EXTENSIONS__
+#define __EXTENSIONS__ /* sys/stat.h won't compile without this */
+#endif
+#endif
 #include <sys/stat.h>
+
+#include <sys/types.h>
+#include <unistd.h>
+#include <signal.h>
+
+#if defined(SOLARIS) || defined(HPUX)
+#ifdef UNDEF__EXTENSIONS__
+#undef __EXTENSIONS__
+#endif
+#endif
+
+/*[defs2]*/
+#include <time.h>
+#include <limits.h>
+#if defined(SOLARIS)
+#define _VA_LIST /* can't define it in stdio.h */
+#endif
+#include <stdio.h>
+#if defined(SOLARIS)
+#undef _VA_LIST
+#endif
+#include <stdarg.h> /* this is the place to define _VA_LIST */
+#include <stdlib.h>
+#include <stddef.h>
+#include <string.h>
+#include <strings.h>
+#include <ctype.h>
 #include <errno.h>
+#include <fcntl.h>
+#include <assert.h>
+#ifndef AUP2_SKIP_WAIT
+#include <sys/wait.h>
+#endif
+
+/*   #if _XOPEN_SOURCE >= 4 */
+#include <sys/statvfs.h>                                                                                                   
+#define STATVFS_NAME statvfs
+#define FSTATVFS_NAME fstatvfs
+/*  #else "Need statvfs/fstatvfs or nonstandard substitute
+    #endif */
+
+const char *getdate_strerror(int e);
+
+const char *getdate_strerror(int e)
+{
+	const char *s[] = {
+		"Invalid getdate_err value",
+		"DATEMSK environment variable null or undefined",
+		"Template file cannot be opened for reading",
+		"Failed to get file status information",
+		"Template file not a regular file",
+		"I/O error encountered while reading template file",
+		"Memory allocation failed",
+		"No line in template that matches input",
+		"Invalid input specification"
+	};
+	if (e < 1 || e > 8)
+		return s[0];
+	return s[e];
+}
+
+/*  END of definition for defs.h replacement */
+
+
 typedef enum {EC_ERRNO = 0, EC_EAI = 1, EC_GETDATE = 2, EC_NONE = 3} EC_ERRTYPE;
 /*
 	File-permission-bit symbols
