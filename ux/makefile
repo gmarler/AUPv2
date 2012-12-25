@@ -50,11 +50,11 @@ defaulttarget: all
 #	NOTE: -KPIC is for 32-bit, -Kpic is for 64-bit?
 OS = SOLARIS
 CFLAGS =   -I. -I../include -I../common -I../c6 -D$(OS) -D_REENTRANT -D_THREAD_SAFE \
-					 -D_POSIX_PTHREAD_SEMANTICS -D_XOPEN_SOURCE=500 -KPIC
+		-D_POSIX_PTHREAD_SEMANTICS -D_XOPEN_SOURCE=500 -D__EXTENSIONS__ -KPIC
 CXXFLAGS = -I. -I../include -I../common -I../c6 -D$(OS) -D_REENTRANT -D_THREAD_SAFE \
-					 -D_XOPEN_SOURCE=500 -D_POSIX_PTHREAD_SEMANTICS -KPIC
-CC = /opt/solstudio12.2/bin/cc
-CXX = /opt/solstudio12.2/bin/CC
+					 -D_XOPEN_SOURCE=500 -D__EXTENSIONS__ -D_POSIX_PTHREAD_SEMANTICS -KPIC
+CC = /opt/solarisstudio12.3/bin/cc
+CXX = /opt/solarisstudio12.3/bin/CC
 
 UXHDRS = \
 	ux.hpp \
