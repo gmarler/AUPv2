@@ -27,11 +27,11 @@ int main(int argc, char *argv[])
 	int len;
 
 	if (argc < 2)
-		file = "/aup/common/macrostr.txt";
+		file = "/home/gmarler/gitwork/AUPv2/common/macrostr.txt";
 	else
 		file = argv[1];
 	ec_null( in = fopen(file, "r") )
-	ec_null( out = fopen("/aup/common/macrostr.incl", "w") )
+	ec_null( out = fopen("/home/gmarler/gitwork/AUPv2/common/macrostr.incl", "w") )
 	while (fgets(s, sizeof(s), in) != NULL) {
 		for (len = strlen(s); len > 0 && isspace((int)s[len - 1]); len--)
 			;
