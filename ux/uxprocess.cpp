@@ -15,7 +15,7 @@
 	are to be used.
 
 */
-#ifdef SOLARIS
+#if defined(SOLARIS) && ! defined(__EXTENSIONS__)
 // needed for setegid and seteuid
 #define __EXTENSIONS__
 #endif
@@ -138,7 +138,8 @@ using namespace Ux;
 */
 /* static */ void Process::execvpe(const char *file, char *const argv[], char *const *envv = NULL)
 {
-	extern char **environ;
+	// extern char **environ;
+	char **environ;
 
 	char **environ_save = environ;
 	if (envv != NULL)
