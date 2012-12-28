@@ -57,6 +57,7 @@ CC = /opt/solarisstudio12.3/bin/cc
 CXX = /opt/solarisstudio12.3/bin/CC
 
 UXHDRS = \
+	ec.hpp \
 	ux.hpp \
 	uxaio.hpp \
 	uxdir.hpp \
@@ -76,7 +77,8 @@ UXHDRS = \
 	uxtimetm.hpp
 
 OBJS = \
-	uxsystem.o\
+	ec.o \
+	uxsystem.o \
 	uxsocket.o \
 	uxnetdb.o \
 	uxtime.o \
@@ -95,12 +97,14 @@ OBJS = \
 	uxtimetm.o \
 	$(AUPOBJS) $(PTHREADSTUB) getdate_strerror.o
 
+LIBS := -lrt -lncurses -lsocket -lnsl -lpthread
+
 lib_OBJS := $(filter-out uxtestfile.o, $(OBJS))
 libUX.so: $(lib_OBJS)
 	$(CXX) -G -i -o libUX.so $(lib_OBJS)
 
-tf: $(OBJS)
-	$(CXX) -o tf $(OBJS) $(LIBS)
+tf: uxtestfile.o libUX.so
+	$(CXX) -o tf $(OBJS) -L. -R. -lUX $(LIBS)
 
 uxtestfile.o: uxtestfile.cpp $(UXHDRS)
 	$(CXX) $(CXXFLAGS)  -c -o uxtestfile.o uxtestfile.cpp
@@ -152,6 +156,9 @@ uxterminal.o: uxterminal.cpp $(UXHDRS)
 
 uxnetdb.o: uxnetdb.cpp $(UXHDRS)
 	$(CXX) $(CXXFLAGS)  -c -o uxnetdb.o uxnetdb.cpp
+
+ec.o: ec.cpp ec.hpp
+	$(CXX) $(CXXFLAGS)  -c -o ec.o ec.cpp
 
 getdate_strerror.o: getdate_strerror.c
 	$(CXX) $(CXXFLAGS)  -c -o getdate_strerror.o getdate_strerror.c
