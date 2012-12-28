@@ -16,6 +16,7 @@
 
 */
 #include "ux.hpp"
+#include "ec.hpp"
 
 using namespace Ux;
 
@@ -474,7 +475,7 @@ static void process_test(void)
 			Process::execlp("echo", "echo", "arg_one", "arg_two", "arg_three", NULL);
 		}
 		catch (const Error& e) {
-			EC__EXIT(e)
+			// EC__EXIT(e)
 		}
 	}
 	p.waitpid(&status);
@@ -487,7 +488,7 @@ static void process_test(void)
 			Process::execvpe("sh", av, ev);
 		}
 		catch (const Error& e) {
-			EC__EXIT(e)
+			// EC__EXIT(e)
 		}
 	}
 	p.waitpid(&status);
@@ -497,7 +498,7 @@ static void process_test(void)
 			Process::pause();
 		}
 		catch (const Error& e) {
-			EC__EXIT(e)
+			// EC__EXIT(e)
 		}
 	}
 	Clock::sleep(1);
@@ -542,7 +543,7 @@ static void process_test(void)
 
 static void process_env_test(void)
 {
-	try {
+	//try {
 		cout << "HOME = " << getenv("HOME") << endl;
 		Process::putenv("NEWVAR=newvalue");
 		cout << "NEWVAR = " << getenv("NEWVAR") << endl;
@@ -550,10 +551,10 @@ static void process_env_test(void)
 		cout << "NEWVAR = " << getenv("NEWVAR") << endl;
 		Process::setenv("NEWVAR", "another value", true);
 		cout << "NEWVAR = " << getenv("NEWVAR") << endl;
-	}
-	catch (const exception& e) {
-		cout << e.what() << endl;
-	}
+	//}
+	//catch (const exception& e) {
+	//	cout << e.what() << endl;
+	//}
 /*
 	catch (const Error& e) {
 		cout << "process_env_test caught an error: " << e << endl;
@@ -591,7 +592,7 @@ static void aio_test(void)
 	cb.aio_nbytes = sizeof(buf2);
 	cb.aio_sigevent.sigev_notify = SIGEV_NONE;
 	f.open(O_RDONLY);
-	timestart();
+	// timestart();
 	while (f.read(buf1, sizeof(buf1)) > 0) {
 		if (count % FREQ == 0) {
 			if (count > 1) {
@@ -603,7 +604,7 @@ static void aio_test(void)
 		}
 		count++;
 	}
-	timestop("asynchronous");
+	// timestop("asynchronous");
 	printf("read %d blocks\n", count);
 }
 
@@ -620,6 +621,7 @@ int main(void)
 	catch (const Error& e) {
 		EC_EXIT(e)
 	}
+	/*
 	try {
 		process_test();
 	}
@@ -636,6 +638,7 @@ int main(void)
 		else
 			EC_EXIT(e)
 	}
+	*/
 	try {
 		file.open(O_RDWR | O_CREAT | O_TRUNC);
 		if (file.write("Hello", 5) != 5)
@@ -677,7 +680,7 @@ int main(void)
 		
 		Dir d("barfdir");
 		cout << d << endl;
-		EC_CATCH( d.mkdir() )
+		EC_CATCH( d.mkdir(777) )
 		cout << "dir access = " << d.access(F_OK, false) << endl;
 		EC_CATCH( d.rmdir() )
 		EC_CATCH( cout << "dir access = " << d.access(F_OK, false) << endl )
