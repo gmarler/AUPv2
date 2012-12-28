@@ -1,9 +1,79 @@
-
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <cerrno>
+#include <csignal>
+
 #include "ec.hpp"
+
+#define EC_EINTERNAL INT_MAX
+
+static struct {
+  char *ms_cat;
+  intptr_t ms_code;
+  char *ms_macro;
+  char *ms_desc;
+} macrostr_db[] = {
+#include "macrostr.incl"
+  { NULL, 0, NULL, NULL}
+};
+
+char *get_macrostr(const char *cat, int code, char **desc)
+{
+  int i;
+
+  for (i = 0; macrostr_db[i].ms_cat != NULL; i++)
+    if (std::strcmp(macrostr_db[i].ms_cat, cat) == 0 &&
+        macrostr_db[i].ms_code == code) {
+      if (desc != NULL)
+        *desc = macrostr_db[i].ms_desc;
+      return macrostr_db[i].ms_macro;
+    }
+  if (desc != NULL)
+    *desc = "?";
+  return "?";
+}
+
+/*[syserrmsg-1]*/
+char *syserrmsgtype(char *buf, size_t buf_max, const char *msg,
+                    int errno_arg, EC_ERRTYPE type)
+{
+  const char *errmsg;
+  char *cat = "?";
+
+  if (msg == NULL)
+    msg = "???";
+  if (errno_arg == 0)
+    // std::snprintf isn't defined until C++11 - so cheat with sprintf
+    // snprintf(buf, buf_max, "%s", msg);
+    std::sprintf(buf, "%s", msg);
+  else {
+    if (errno_arg == EC_EINTERNAL)
+      errmsg = "Internal error (nonstandard)";
+    else if (type == EC_EAI) {
+      cat = "eai";
+      // errmsg = gai_strerror(errno_arg);
+      errmsg = "Need to implement gai_strerror()";
+    }
+    else if (type == EC_GETDATE)
+      // errmsg = getdate_strerror(errno_arg);
+      errmsg = "Need to implement getdate_strerror()";
+    else {
+      cat = "errno";
+      errmsg = std::strerror(errno_arg);
+    }
+    /*errmsg = strerror(errno_arg);*/
+    // std::snprintf isn't defined until C++11 - so cheat with sprintf
+    // sprintf(buf, buf_max, "%s\n\t\t*** %s (%d: \"%s\") ***", msg,
+    //    get_macrostr(cat, errno_arg, NULL), errno_arg,
+    //    errmsg != NULL ? errmsg : "no message string");
+    sprintf(buf, "%s\n\t\t*** %s (%d: \"%s\") ***", msg,
+            get_macrostr(cat, errno_arg, NULL), errno_arg,
+            errmsg != NULL ? errmsg : "no message string");
+  }
+  return buf;
+}
+
 
 /*[ec_atexit_fcn]*/
 static void ec_atexit_fcn(void)
@@ -48,9 +118,9 @@ void ec_push(const char *fcn, const char *file, int line,
   struct ec_node node, *p;
   size_t len;
   static bool attexit_called = false;
-  char *SEP1 = " [";
-  char *SEP2 = ":";
-  char *SEP3 = "] ";
+  const char *SEP1 = " [";
+  const char *SEP2 = ":";
+  const char *SEP3 = "] ";
 
   ec_mutex(true);
   node.ec_errno = errno_arg;
@@ -118,3 +188,5 @@ void ec_print(void)
   }
   ec_mutex(false);
 }
+
+

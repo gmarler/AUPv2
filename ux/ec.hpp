@@ -2,9 +2,7 @@
 #define _EC_HPP_
 
 #include <pthread.h>
-
-typedef enum {EC_ERRNO = 0, EC_EAI = 1, EC_GETDATE = 2, EC_NONE = 3} EC_ERRTYPE;
-
+#include "ux.hpp"
 
 char *syserrmsgtype(char *buf, size_t buf_max, const char *msg,
                     int s_errno, EC_ERRTYPE type);
