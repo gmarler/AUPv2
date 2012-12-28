@@ -16,7 +16,7 @@
 
 */
 #include "ux.hpp"
-#ifdef SOLARIS
+#if defined(SOLARIS) && ! defined(__EXTENSIONS__)
 #define __EXTENSIONS__
 #endif
 #include <netdb.h> // for gai_strerror
