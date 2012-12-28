@@ -62,7 +62,7 @@
 #endif
 
 /*   #if _XOPEN_SOURCE >= 4 */
-#include <sys/statvfs.h>                                                                                                   
+#include <sys/statvfs.h>
 #define STATVFS_NAME statvfs
 #define FSTATVFS_NAME fstatvfs
 /*  #else "Need statvfs/fstatvfs or nonstandard substitute
